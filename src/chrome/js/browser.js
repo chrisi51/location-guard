@@ -2,12 +2,12 @@
 // see browser_base.js
 //
 
-Browser.init = function(script) {
-	Browser._script = script;
+Browser.prototype.init = function(script) {
+	browser._script = script;
 
 	switch(script) {
 		case 'main':
-			this._main_script();
+			browser._main_script();
 			break;
 
 		case 'content':
@@ -17,7 +17,7 @@ Browser.init = function(script) {
 
 // all browser-specific code that runs in the main script goes here
 //
-Browser._main_script = function() {
+Browser.prototype._main_script = function() {
 	// fire browser.install/update events
 	//
 	chrome.runtime.onInstalled.addListener(function(details) {
@@ -31,8 +31,8 @@ Browser._main_script = function() {
 	// some operations cannot be done by other scripts, so we set
 	// handlers to do them in the main script
 	//
-	Browser.rpc.register('refreshIcon', function(tabId) {
-		Browser.gui.refreshIcon(tabId);
+	browser.rpc.register('refreshIcon', function(tabId) {
+		browser.gui.refreshIcon(tabId);
 	});
 }
 
@@ -40,22 +40,22 @@ Browser._main_script = function() {
 //////////////////// rpc ///////////////////////////
 //
 //
-Browser.rpc.register = function(name, handler) {
+Browser.Rpc.prototype.register = function(name, handler) {
 	// set onMessage listener if called for first time
-	if(!this._methods) {
-		this._methods = {};
-		chrome.runtime.onMessage.addListener(this._listener);
+	if(!browser.rpc._methods) {
+		browser.rpc._methods = {};
+		chrome.runtime.onMessage.addListener(browser.rpc._listener);
 	}
-	this._methods[name] = handler;
+	browser.rpc._methods[name] = handler;
 }
 
 // onMessage listener. Received messages are of the form
 // { method: ..., args: ... }
 //
-Browser.rpc._listener = function(message, sender, replyHandler) {
+Browser.Rpc.prototype._listener = function(message, sender, replyHandler) {
 	blog("RPC: got message", [message, sender, replyHandler]);
 
-	var handler = Browser.rpc._methods[message.method];
+	var handler = browser.rpc._methods[message.method];
 	if(!handler) return;
 
 	// add tabId and replyHandler to the arguments
@@ -66,7 +66,7 @@ Browser.rpc._listener = function(message, sender, replyHandler) {
 	return handler.apply(null, args);
 };
 
-Browser.rpc.call = function(tabId, name, args, cb) {
+Browser.Rpc.prototype.call = function(tabId, name, args, cb) {
 	var message = { method: name, args: args };
 	if(!cb) cb = function() {};							// we get error of not cb is passed
 
@@ -85,29 +85,29 @@ Browser.rpc.call = function(tabId, name, args, cb) {
 //       popup, ...) and it always accesses the same storage, so no rpc
 //       is needed for storage!
 //
-Browser.storage._key = "global";	// store everything under this key
+Browser.Storage.prototype._key = "global";	// store everything under this key
 
-Browser.storage.get = function(cb) {
-	chrome.storage.local.get(Browser.storage._key, function(items) {
-		var st = items[Browser.storage._key];
+Browser.Storage.prototype.get = function(cb) {
+	chrome.storage.local.get(browser.storage._key, function(items) {
+		var st = items[browser.storage._key];
 
 		// default values
 		if(!st) {
-			st = Browser.storage._default;
-			Browser.storage.set(st);
+			st = browser.storage._default;
+			browser.storage.set(st);
 		}
 		cb(st);
 	});
 };
 
-Browser.storage.set = function(st) {
+Browser.Storage.prototype.set = function(st) {
 	blog('saving st', st);
 	var items = {};
-	items[Browser.storage._key] = st;
+	items[browser.storage._key] = st;
 	chrome.storage.local.set(items);
 };
 
-Browser.storage.clear = function() {
+Browser.Storage.prototype.clear = function() {
 	chrome.storage.local.clear();
 };
 
@@ -115,13 +115,13 @@ Browser.storage.clear = function() {
 //////////////////// gui ///////////////////////////
 //
 //
-Browser.gui.refreshIcon = function(tabId) {
-	if(Browser._script == 'content') {
+Browser.Gui.prototype.refreshIcon = function(tabId) {
+	if(browser._script == 'content') {
 		// cannot do it in the content script, delegate to the main
 		// in this case tabId can be null, the main script will get the tabId
 		// from the rpc call
 
-		Browser.rpc.call(null, 'refreshIcon');
+		browser.rpc.call(null, 'refreshIcon');
 		return;
 	}
 
@@ -146,14 +146,14 @@ Browser.gui.refreshIcon = function(tabId) {
 	});
 };
 
-Browser.gui.refreshAllIcons = function() {
+Browser.Gui.prototype.refreshAllIcons = function() {
 	chrome.tabs.query({}, function(tabs) {
 		for(var i = 0; i < tabs.length; i++)
-			Browser.gui.refreshIcon(tabs[i].id);
+			browser.gui.refreshIcon(tabs[i].id);
 	});
 };
 
-Browser.gui.showOptions = function(anchor) {
+Browser.Gui.prototype.showOptions = function(anchor) {
 	var baseUrl = chrome.extension.getURL('options.html');
 	var fullUrl = baseUrl + (anchor || '');
 
@@ -166,7 +166,7 @@ Browser.gui.showOptions = function(anchor) {
 	});
 };
 
-Browser.gui.getActiveTabUrl = function(handler) {
+Browser.Gui.prototype.getActiveTabUrl = function(handler) {
 	chrome.tabs.query(
 		{ active: true,               // Select active tabs
 		  lastFocusedWindow: true     // In the current window
@@ -174,7 +174,7 @@ Browser.gui.getActiveTabUrl = function(handler) {
 			// there can be only one;
 			// we call getUrl from the content script (avoid asking for 'tabs' permisison)
 			//
-			Browser.rpc.call(tabs[0].id, 'getState', [], function(state) {
+			browser.rpc.call(tabs[0].id, 'getState', [], function(state) {
 				handler(state.url);
 			});
 		}
@@ -184,8 +184,8 @@ Browser.gui.getActiveTabUrl = function(handler) {
 
 // in chrome, apart from the current console, we also log to the background page, if possible and loaded
 //
-Browser.log = function(a, b) {
-	if(!Browser.debugging) return;
+Browser.prototype.log = function(a, b) {
+	if(!browser.debugging) return;
 
 	console.log(a, b);
 

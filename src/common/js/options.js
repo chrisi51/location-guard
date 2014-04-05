@@ -14,19 +14,19 @@ var currentPos = {
 	longitude: 2.3569107055664062
 };
 
-Browser.init('options');
-Browser.storage.get(function(st) {
+browser.init('options');
+browser.storage.get(function(st) {
 	epsilon = st.epsilon;
 });
 
 
 
 // TODO: right now changes in textboxes are not saved when closing the popup, cause
-//       javascript stops running right away and Browser.storage.add is not executed
+//       javascript stops running right away and browser.storage.add is not executed
 //       we should avoid using textboxes anyway
 //
 function saveGeneral() {
-	Browser.storage.get(function(st) {
+	browser.storage.get(function(st) {
 		st.paused = $("#paused").prop('checked');
 		st.hideIcon = $("#hideIcon").prop('checked');
 		//st.epsilon = parseFloat($("#epsilon").val());
@@ -40,16 +40,16 @@ function saveGeneral() {
 			return;
 		}
 
-		Browser.storage.set(st);
+		browser.storage.set(st);
 
-		Browser.gui.refreshAllIcons();
+		browser.gui.refreshAllIcons();
 	});
 }
 
 function saveLevel() {
 	if(disableSave) return;
 
-	Browser.storage.get(function(st) {
+	browser.storage.get(function(st) {
 		var active = $("#levelTabs").tabs("option", "active");
 		var level = ['low', 'medium', 'high'][active];
 
@@ -62,7 +62,7 @@ function saveLevel() {
 			cacheTime: cacheTime
 		};
 
-		Browser.storage.set(st);
+		browser.storage.set(st);
 	});
 }
 
@@ -111,7 +111,7 @@ function showFixedPos() {
 	// when the panel is shown, otherwise its size will be wrong
 	if(fixedPosMap) return;
 
-	Browser.storage.get(function(st) {
+	browser.storage.get(function(st) {
 		var latlng = [st.fixedPos.latitude, st.fixedPos.longitude];
 
 		fixedPosMap = new L.map('fixedPosMap')
@@ -129,13 +129,13 @@ function showFixedPos() {
 }
 
 function saveFixedPos(e) {
-	Browser.storage.get(function(st) {
+	browser.storage.get(function(st) {
 		st.fixedPos = { latitude: e.latlng.lat, longitude: e.latlng.lng };
 
 		fixedPosMarker.setLatLng(e.latlng);
 
 		blog('saving st', st);
-		Browser.storage.set(st);
+		browser.storage.set(st);
 	});
 }
 
@@ -148,7 +148,7 @@ function showLevelInfo() {
 	var active = $("#levelTabs").tabs("option", "active");
 	var level = ['low', 'medium', 'high'][active];
 
-	Browser.storage.get(function(st) {
+	browser.storage.get(function(st) {
 		// set sliders' value
 		var radius = st.levels[level].radius;
 		var cacheTime = st.levels[level].cacheTime;
@@ -217,7 +217,7 @@ function updateCacheText(ct) {
 }
 
 function drawUI() {
-	Browser.storage.get(function(st) {
+	browser.storage.get(function(st) {
 		$('#faqlist').accordion({
 			collapsible: true
 		});
@@ -291,15 +291,15 @@ function showCurrentPosition() {
 
 function restoreDefaults() {
 	if(window.confirm('Are you sure you want to restore the default options?')) {
-		Browser.storage.clear();
+		browser.storage.clear();
 		drawUI();
 	}
 }
 
 function deleteCache() {
-	Browser.storage.get(function(st) {
+	browser.storage.get(function(st) {
 		st.cachedPos = {};
-		Browser.storage.set(st);
+		browser.storage.set(st);
 		window.alert('Location cache was deleted');
 	});
 }

@@ -112,9 +112,9 @@ var cpc = new CPC();
 cpc.register('getNoisyPosition', function(options, replyHandler) {
 	// refresh icon before fetching the location
 	apiCalled = true;
-	Browser.gui.refreshIcon();
+	browser.gui.refreshIcon();
 
-	Browser.storage.get(function(st) {
+	browser.storage.get(function(st) {
 		// if level == 'fixed' and fixedPosNoAPI == true, then we return the
 		// fixed position without calling the geolocation API at all.
 		//
@@ -161,7 +161,7 @@ cpc.register('getNoisyPosition', function(options, replyHandler) {
 // gets position, returs noisy version based on the options
 //
 function addNoise(position, handler) {
-	Browser.storage.get(function(st) {
+	browser.storage.get(function(st) {
 		var domain = Util.extractDomain(window.location.href);
 		var level = st.domainLevel[domain] || st.defaultLevel;
 
@@ -191,7 +191,7 @@ function addNoise(position, handler) {
 
 			// cache
 			st.cachedPos[level] = { epoch: (new Date).getTime(), position: position };
-			Browser.storage.set(st);
+			browser.storage.set(st);
 
 			blog('noisy coords', position.coords);
 		}
@@ -201,8 +201,8 @@ function addNoise(position, handler) {
 	});
 }
 
-Browser.init('content');
-Browser.rpc.register('getState', function(tabId, replyHandler) {
+browser.init('content');
+browser.rpc.register('getState', function(tabId, replyHandler) {
 	replyHandler({
 		url: window.location.href,
 		apiCalled: apiCalled

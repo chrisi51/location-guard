@@ -1,11 +1,11 @@
 blog("popup loading");
 
-Browser.init('popup');
-Browser.storage.get(function(g) { blog("settings", g) });
+browser.init('popup');
+browser.storage.get(function(g) { blog("settings", g) });
 
 // get current tab's url
 var url;
-Browser.gui.getActiveTabUrl(function(_url) {
+browser.gui.getActiveTabUrl(function(_url) {
 	url = _url;
 });
 
@@ -19,28 +19,28 @@ function menuAction(action) {
 		case 'options':
 		case 'faq':
 			var anchor = action == 'options' ? '#general' : '#faq';
-			Browser.gui.showOptions(anchor);
+			browser.gui.showOptions(anchor);
 
 			closePopup();
 			break;
 
 		case 'hideIcon':
-			Browser.storage.get(function(st) {
+			browser.storage.get(function(st) {
 				st.hideIcon = true;
-				Browser.storage.set(st);
+				browser.storage.set(st);
 
-				Browser.gui.refreshAllIcons();
+				browser.gui.refreshAllIcons();
 
 				closePopup();
 			});
 			break;
 
 		case 'pause':
-			Browser.storage.get(function(st) {
+			browser.storage.get(function(st) {
 				st.paused = !st.paused;
-				Browser.storage.set(st);
+				browser.storage.set(st);
 
-				Browser.gui.refreshAllIcons();
+				browser.gui.refreshAllIcons();
 
 				closePopup();
 			});
@@ -50,16 +50,16 @@ function menuAction(action) {
 			break;
 
 		default:	// set level
-			Browser.storage.get(function(st) {
+			browser.storage.get(function(st) {
 				var domain = Util.extractDomain(url);
 				var level = action;
 				if(level == st.defaultLevel)
 					delete st.domainLevel[domain];
 				else
 					st.domainLevel[domain] = level;
-				Browser.storage.set(st);
+				browser.storage.set(st);
 
-				Browser.gui.refreshAllIcons();
+				browser.gui.refreshAllIcons();
 
 				closePopup();
 			});
@@ -68,7 +68,7 @@ function menuAction(action) {
 }
 
 function drawUI() {
-	Browser.storage.get(function(st) {
+	browser.storage.get(function(st) {
 		var domain = Util.extractDomain(url);
 		var level = st.domainLevel[domain] || st.defaultLevel;
 

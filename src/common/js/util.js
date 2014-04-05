@@ -38,14 +38,14 @@ var Util = {
 	//       Firefox has issues with nested calls (we should fix this at some point)
 	//
 	getIconInfo: function(tabId, handler) {
-		Browser.rpc.call(tabId, 'getState', [], function(state) {
+		browser.rpc.call(tabId, 'getState', [], function(state) {
 			if(!state) {
 				// this is not a tab with content script loaded, hide icon
 				handler({ hidden: true, private: false, title: "" });
 				return;
 			}
 
-			Browser.storage.get(function(st) {
+			browser.storage.get(function(st) {
 				var domain = Util.extractDomain(state.url);
 				var level = st.domainLevel[domain] || st.defaultLevel;
 
