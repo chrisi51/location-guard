@@ -1,3 +1,15 @@
+var apiCalled = false;		// true means that an API call has already happened, so we need to show the icon
+
+browser = new Browser.Content();
+browser.rpc.register('getState', function(tabId, replyHandler) {
+	replyHandler({
+		url: window.location.href,
+		apiCalled: apiCalled
+	});
+});
+browser.init();
+
+
 // Some code runs in the content script, and some is injected in the page.
 // CPC simplifies the communication between the two.
 // It uses document.defaultView.postMessage (this is the same as window.postMessage, but in Firefox
@@ -104,8 +116,6 @@ if(document.documentElement.tagName.toLowerCase() == 'html') { // only for html
 		parent_.appendChild(script);
 }
 
-var apiCalled = false;		// true means that an API call has already happened, so we need to show the icon
-
 // methods called by the page
 //
 var cpc = new CPC();
@@ -200,11 +210,3 @@ function addNoise(position, handler) {
 		handler(position);
 	});
 }
-
-browser.init('content');
-browser.rpc.register('getState', function(tabId, replyHandler) {
-	replyHandler({
-		url: window.location.href,
-		apiCalled: apiCalled
-	});
-});

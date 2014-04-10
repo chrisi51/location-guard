@@ -1,12 +1,11 @@
 // implements browser_base.js
 
-Browser.prototype.init = function (script) { 
-    browser._script = script;
+Browser.prototype.init = function () {
     browser.log('initializing');
 
     browser.storage._init();
 
-    switch(script) {
+    switch(this._script) {
     case 'main':
 	browser._main_script();
         browser.gui._init();

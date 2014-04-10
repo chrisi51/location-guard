@@ -14,7 +14,8 @@ var currentPos = {
 	longitude: 2.3569107055664062
 };
 
-browser.init('options');
+browser = new Browser.Options();
+browser.init();
 browser.storage.get(function(st) {
 	epsilon = st.epsilon;
 });

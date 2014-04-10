@@ -2,22 +2,9 @@
 // see browser_base.js
 //
 
-Browser.prototype.init = function(script) {
-	browser._script = script;
-
-	switch(script) {
-		case 'main':
-			browser._main_script();
-			break;
-
-		case 'content':
-			break;
-	}
-};
-
 // all browser-specific code that runs in the main script goes here
 //
-Browser.prototype._main_script = function() {
+Browser.Main.prototype.init = function() {
 	// fire browser.install/update events
 	//
 	chrome.runtime.onInstalled.addListener(function(details) {
@@ -31,8 +18,8 @@ Browser.prototype._main_script = function() {
 	// some operations cannot be done by other scripts, so we set
 	// handlers to do them in the main script
 	//
-	browser.rpc.register('refreshIcon', function(tabId) {
-		browser.gui.refreshIcon(tabId);
+	browser.rpc.register('refreshIcon', function(callerTabId, tabId) {
+		browser.gui.refreshIcon(tabId || callerTabId);
 	});
 }
 
@@ -115,15 +102,17 @@ Browser.Storage.prototype.clear = function() {
 //////////////////// gui ///////////////////////////
 //
 //
-Browser.Gui.prototype.refreshIcon = function(tabId) {
-	if(browser._script == 'content') {
-		// cannot do it in the content script, delegate to the main
-		// in this case tabId can be null, the main script will get the tabId
-		// from the rpc call
+Browser.Content.Gui.prototype.refreshIcon = function(tabId) {
+	// cannot do it here, delegate to the main
+	// in this case tabId can be null, the main script will get the tabId
+	// from the rpc call
 
-		browser.rpc.call(null, 'refreshIcon');
-		return;
-	}
+	browser.rpc.call(null, 'refreshIcon', [tabId]);
+}
+
+Browser.Gui.prototype.refreshIcon = function(tabId) {
+	// not implemented without tabId
+	if(!tabId) throw 'not implemented';
 
 	Util.getIconInfo(tabId, function(info) {
 		if(!info || info.hidden) {
@@ -187,13 +176,13 @@ Browser.Gui.prototype.getActiveTabUrl = function(handler) {
 Browser.prototype.log = function(a, b) {
 	if(!browser.debugging) return;
 
-	console.log(a, b);
+	console.log(this._script + ": " + a, b);
 
 	var bp;
 	if(chrome.extension && chrome.extension.getBackgroundPage)
 		bp = chrome.extension.getBackgroundPage();
 
 	if(bp && bp.console != console)		// avoid logging twice
-		bp.console.log(a, b);
+		bp.console.log(this._script + ": " + a, b);
 }
 

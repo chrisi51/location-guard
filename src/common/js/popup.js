@@ -1,6 +1,6 @@
-blog("popup loading");
-
-browser.init('popup');
+browser = new Browser.Popup();
+blog("loading");
+browser.init();
 browser.storage.get(function(g) { blog("settings", g) });
 
 // get current tab's url

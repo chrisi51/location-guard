@@ -28,6 +28,32 @@ var Util = {
 		return JSON.parse(JSON.stringify(obj));
 	},
 
+	// OO helper functions, based on http://javascript.info/tutorial/pseudo-classical-pattern
+	//
+	inherit: function(Child, Parent) {
+		// Child.prototype should be an empty object with __proto__ == Parent.proto
+		// (NOT an instance of Parent, we don't want to create Parent object)
+		function F() {}
+		F.prototype = Parent.prototype;
+		Child.prototype = new F;
+
+		Child.prototype.constructor = Child;
+		//Child.parent = Parent.prototype;
+	},
+	subclass: function(Parent) {
+		// creates simple subclass, whose constructor calls parent constructor
+		function Child() {
+			Parent.apply(this);
+		}
+		Util.inherit(Child, Parent);
+		return Child;
+	},
+	mixin: function(target, source) {
+		// mixes target properties in source
+		for(var k in source)
+			target[k] = source[k];
+	},
+
 	// Get icon information for a specific tabId. Returns:
 	//   { hidden:   true if the icon should be hidden,
 	//     private:  true if we are in a private mode,

@@ -2,24 +2,19 @@
 // Subclasses should implement the API defined here
 //
 function Browser() {
-	this.rpc = new Browser.Rpc();
-	this.storage = new Browser.Storage();
-	this.gui = new Browser.Gui();
+	this.rpc = new this.constructor.Rpc();
+	this.storage = new this.constructor.Storage();
+	this.gui = new this.constructor.Gui();
 }
 
-Browser.prototype = {
+Util.mixin(Browser.prototype, {
 	debugging: true,				// set this to false on production
 
-	// browser.init(script)
+	// browser.init()
 	//
-	// Initializes the Browser library. 'script' is the type of scrpit loading the
-	// library, it can be one of:
-	//   main
-	//   content
-	//   popup
-	//   options
+	// Initializes the Browser library.
 	//
-	init: function(script) {},
+	init: function() {},
 
 	// browser.log(text, value)
 	//
@@ -30,7 +25,7 @@ Browser.prototype = {
 
 		console.log(text, value);
 	}
-};
+});
 
 // browser.rpc
 //
@@ -39,7 +34,7 @@ Browser.prototype = {
 // and externally in the extension's scripts.
 //
 Browser.Rpc = function() {}
-Browser.Rpc.prototype = {
+Util.mixin(Browser.Rpc.prototype, {
 	// browser.rpc.register(name, handler)
 	//
 	// Registers a method to be callable from other scripts.
@@ -65,7 +60,7 @@ Browser.Rpc.prototype = {
 	//   handler:  function(res), will be called when the result is received
 	//
 	call: function(tabId, name, args, handler) {}
-};
+});
 
 // browser.storage
 //
@@ -74,7 +69,7 @@ Browser.Rpc.prototype = {
 // else that needs to be stored. It is fetched and stored as a whole.
 //
 Browser.Storage = function() {}
-Browser.Storage.prototype = {
+Util.mixin(Browser.Storage.prototype, {
 	// browser.storage.get(handler)
 	//
 	// fetches the storage object and passes it to the handler.
@@ -125,7 +120,7 @@ Browser.Storage.prototype = {
 		defaultLevel: "medium",
 		domainLevel: {}
 	}
-};
+});
 
 // browser.gui
 //
@@ -141,11 +136,11 @@ Browser.Storage.prototype = {
 // When refreshIcon or refreshAllIcons are called the icons should be refreshed.
 //
 Browser.Gui = function() {}
-Browser.Gui.prototype = {
+Util.mixin(Browser.Gui.prototype, {
 	// browser.gui.refreshIcon(tabId)
 	//
 	// Refreshes the icon of the tab with the given 'tabId', or the current tab if tabId is null
-	// getIconInfo should be called to get the icon's info
+	// Util.getIconInfo should be called to get the icon's info
 	//
 	refreshIcon: function(tabId) {},
 
@@ -168,12 +163,25 @@ Browser.Gui.prototype = {
 	// Gets the url of the active tab and passes it to 'handler'
 	//
 	getActiveTabUrl: function(handler) {}
-};
-
-var browser = new Browser();
+});
 
 // for quick logging
 function blog(a, b) {
 	browser.log(a, b);
+}
+
+
+
+// subclasses
+//
+var subclasses = ['Main', 'Content', 'Popup', 'Options'];
+for(var i in subclasses) {
+	var sc = subclasses[i];
+
+	Browser[sc]         = Util.subclass(Browser);
+	Browser[sc].Rpc     = Util.subclass(Browser.Rpc);
+	Browser[sc].Storage = Util.subclass(Browser.Storage);
+	Browser[sc].Gui     = Util.subclass(Browser.Gui);
+	Browser[sc].prototype._script = sc.toLowerCase();
 }
 

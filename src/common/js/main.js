@@ -3,6 +3,7 @@
 // Browser-specific functionality for the main script, if needed, is added by browser/*.js
 //
 
+browser = new Browser.Main();
 browser.log('starting');
 
 Util.events.addListener('browser.install', function() {
@@ -20,4 +21,4 @@ Util.events.addListener('browser.update', function() {
 	});
 });
 
-browser.init('main');
+browser.init();
