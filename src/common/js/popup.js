@@ -55,6 +55,28 @@ function doAction() {
 			$("#levels").popup("open");
 			break;
 
+		case 'setLocation':
+			$("#locations").popup("open");
+			break;
+
+		case 'real':
+    case 'fixed':	// set locations
+			Browser.storage.get(function(st) {
+				var domain = Util.extractDomain(url);
+				var location = action;
+				if(location == st.defaultLocation)
+					delete st.domainLocation[domain];
+				else
+					st.domainLocation[domain] = location;
+
+				Browser.storage.set(st, function() {
+					Browser.gui.refreshAllIcons();
+					closePopup();
+				});
+			});
+			break;
+
+
 		default:	// set level
 			Browser.storage.get(function(st) {
 				var domain = Util.extractDomain(url);
@@ -82,21 +104,24 @@ function drawUI() {
 		url = callUrl;
 		var domain = Util.extractDomain(url);
 		var level = st.domainLevel[domain] || st.defaultLevel;
+		var location = st.domainLocation[domain] || st.defaultLocation;
 
-		$("#title").text(
+		$("#title").html(
 			st.paused		? "Location Guard is paused" :
-			level == 'real'	? "Using your real location" :
-			level == 'fixed'? "Using a fixed location" :
+			location == 'real'	? "Using your real location<br>Privacy level: "+level :
+			location == 'fixed'? "Using a fixed location<br>Privacy level: "+level :
 			"Privacy level: " + level
 		);
 
 		$("#pause").text((st.paused ? "Resume" : "Pause") + " Location Guard");
 		$("#pause").parent().attr("data-icon", st.paused ? "play" : "pause");
 		$("#setLevel").html("Set level for <b>" + domain + "</b>");
+		$("#setLocation").html("Set location for <b>" + domain + "</b>");
 
-		$("#setLevel,#hideIcon").toggle(!st.paused);
+		$("#setLevel,#setLocation,#hideIcon").toggle(!st.paused);
 
 		$("#"+level).attr("checked", true);
+		$("#"+location).attr("checked", true);
 
 		$("a, input").on("click", doAction);
 
