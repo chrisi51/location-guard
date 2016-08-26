@@ -48,6 +48,8 @@ var Util = {
 			Browser.storage.get(function(st) {
 				var domain = Util.extractDomain(state.callUrl);
 				var level = st.domainLevel[domain] || st.defaultLevel;
+				var location = st.domainLocation[domain] || st.defaultLocation;
+        
 
 				var info = {
 					hidden:  st.hideIcon || !state.apiCalled,
