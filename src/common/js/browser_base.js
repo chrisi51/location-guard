@@ -106,7 +106,9 @@ var Browser = {
 				}
 			},
 			defaultLevel: "medium",
-			domainLevel: {}
+			defaultLocation: "real",
+			domainLevel: {},
+			domainLocation: {},
 		}
 	},
 
