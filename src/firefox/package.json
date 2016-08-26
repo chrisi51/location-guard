@@ -1,16 +1,16 @@
 {
-  "name": "location-guard",
-  "title": "Location Guard",
-  "id": "jid1-HdwPLukcGQeOSh@jetpack",
-  "homepage": "https://github.com/chatziko/location-guard/",
+  "name": "location-spoofer",
+  "title": "Location Spoofer",
+  "id": "jid1-ffdgdgrf@jetpack",
+  "homepage": "https://github.com/chrisi51/location-guard/",
   "main": "lib/main.js",
   "description": "Hide your geographic location from websites.",
-  "author": "Kostas Chatzikokolakis",
-  "contributors": ["Marco Stronati"],
+  "author": "Christian Hillebrand",
+  "contributors": ["Kostas Chatzikokolakis","Marco Stronati"], 
   "icon": {
-    "64": "resource://location-guard/images/pin_64.png",
-    "48": "resource://location-guard/images/pin_38.png",
-    "32": "resource://location-guard/images/pin_32.png"
+    "64": "resource://location-spoofer/images/pin_64.png",
+    "48": "resource://location-spoofer/images/pin_38.png",
+    "32": "resource://location-spoofer/images/pin_32.png"
   },
   "license": "MPL 2.0",
   "version": "1.2.3",
