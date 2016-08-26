@@ -39,8 +39,8 @@ Browser._main_script = function() {
 
 	var data = require("sdk/self").data;
 
-	// make resource://location-guard/... likes to point to our data dir
-	require('./resource').set('location-guard', data.url(''));
+	// make resource://location-spoofer/... likes to point to our data dir
+	require('./resource').set('location-spoofer', data.url(''));
 
 	// refresh icon when a tab is activated
 	//
@@ -69,7 +69,7 @@ Browser._main_script = function() {
 	// our internal pages (options, demo, popup): insert only messageProxy for communication
 	//
 	require("sdk/page-mod").PageMod({
-		include: ["resource://location-guard/*"],
+		include: ["resource://location-spoofer/*"],
 		contentScriptWhen: 'start', // sets up comm. before running the page scripts
 		contentScriptFile: [data.url("js/messageProxy.js")],
 		onAttach: Browser._onWorkerAttach,
@@ -257,7 +257,7 @@ Browser.gui._init = function(){
 		Cu.import("resource:///modules/CustomizableUI.jsm");
 
 		this._widgetId =															// widget id used internally by CustomizableUI, see https://github.com/mozilla/addon-sdk/blob/master/lib/sdk/ui/button/toggle.js
-			('toggle-button--' + require("sdk/self").id.toLowerCase()+ '-' + "location_guard").
+			('toggle-button--' + require("sdk/self").id.toLowerCase()+ '-' + "location_spoofer").
 			replace(/[^a-z0-9_-]/g, '');
 
 		CustomizableUI.addListener({
@@ -340,8 +340,8 @@ Browser.gui._refreshButton = function(info) {
 
 		if(!this._button) {
 			this._button = ToggleButton({
-				id: "location_guard",
-				label: "Location Guard",
+				id: "location_spoofer",
+				label: "Location Spoofer",
 				icon: icon,
 				onChange: function(state) {
 					if(state.checked)
@@ -419,7 +419,7 @@ Browser.gui._refreshPageAction = function(info) {
 	} else if(info.hidden) {
 		// if the API is called by the icon is hidden, add menu
 		this._menu = nw.menu.add({
-			name: "Location Guard",
+			name: "Location Spoofer",
 			callback: require('./PopupFennec').show
 		});
 
@@ -433,13 +433,13 @@ Browser.gui._refreshPageAction = function(info) {
 
 		this._pageaction = PageActions.add({
 			icon: "data:image/png;base64," + this._base64_cache[icon],
-			title: "Location Guard",
+			title: "Location Spoofer",
 			clickCallback: require('./PopupFennec').show
 		});
 	}
 
 	/*
-	nw.toast.show("Location Guard is enabled", "long", {
+	nw.toast.show("Location Spoofer is enabled", "long", {
 		button: {
 			label: "SHOW",
 			callback: require('./PopupFennec').show
@@ -494,7 +494,7 @@ Browser.gui.showPage = function(name) {
 		// if there is any tab showing an internal page, activate and update it, otherwise open new
 		//
 		var data = require("sdk/self").data;
-		var baseUrl = 'resource://location-guard/';
+		var baseUrl = 'resource://location-spoofer/';
 		var fullUrl = baseUrl + name;
 
 		if(this._fennec) {
