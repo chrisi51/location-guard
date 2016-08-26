@@ -128,8 +128,9 @@ rpc.register('getNoisyPosition', function(options, replyHandler) {
 		//
 		var domain = Util.extractDomain(myUrl);
 		var level = st.domainLevel[domain] || st.defaultLevel;
+		var location = st.domainLocation[domain] || st.defaultLocation;
 
-		if(level == 'fixed' && st.fixedPosNoAPI) {
+		if(location == 'fixed' && st.fixedPosNoAPI) {
 			var noisy = {
 				coords: {
 					latitude: st.fixedPos.latitude,
@@ -171,11 +172,12 @@ function addNoise(position, handler) {
 	Browser.storage.get(function(st) {
 		var domain = Util.extractDomain(myUrl);
 		var level = st.domainLevel[domain] || st.defaultLevel;
+		var location = st.domainLocation[domain] || st.defaultLocation;
 
-		if(st.paused || level == 'real') {
+		if(st.paused) {
 			// do nothing, use real location
 
-		} else if(level == 'fixed') {
+/*		} else if(location == 'fixed') {
 			position.coords = {
 				latitude: st.fixedPos.latitude,
 				longitude: st.fixedPos.longitude,
@@ -185,12 +187,16 @@ function addNoise(position, handler) {
 				heading: null,
 				speed: null
 			};
-
+*/
 		} else if(st.cachedPos[level] && ((new Date).getTime() - st.cachedPos[level].epoch)/60000 < st.levels[level].cacheTime) {
 			position = st.cachedPos[level].position;
 			blog('using cached', position);
 
 		} else {
+      if(location == 'fixed') {
+        position.coords.latitude = st.fixedPos.latitude;
+        position.coords.longitude = st.fixedPos.longitude;
+      }
 			// add noise
 			var epsilon = st.epsilon / st.levels[level].radius;
 
