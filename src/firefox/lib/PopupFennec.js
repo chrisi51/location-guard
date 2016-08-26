@@ -19,6 +19,7 @@ PopupFennec.show = function() {
 
 		var domain = Util.extractDomain(callUrl);
 		var level = st.domainLevel[domain] || st.defaultLevel;
+		var location = st.domainLocation[domain] || st.defaultLocation;
 
 		var title =
 			st.paused		? "Location Guard is paused" :
@@ -44,6 +45,9 @@ PopupFennec.show = function() {
 			if(data.button == -1) return;
 			var action = items[data.button].action;
 			switch(action) {
+				case 'setLocation':
+					PopupFennec.setLocation(domain, location);
+					break;
 				case 'setLevel':
 					PopupFennec.setLevel(domain, level);
 					break;
@@ -72,13 +76,39 @@ PopupFennec.show = function() {
 	});
 };
 
+PopupFennec.setLocation = function(domain, location) {
+	var items = [
+		{ label: "Use fixed location", selected: (location == "fixed"),  location: "fixed"  },
+		{ label: "Use real location",  selected: (location == "real"),   location: "real"   },
+	];
+
+	new Prompt({
+		title: "Privacy location for " + domain,
+		window: Services.wm.getMostRecentWindow("navigator:browser"),
+	})
+	.setSingleChoiceItems(items)
+	.show(function(data) {
+		if(data.button == -1) return;
+		var location = items[data.button].location;
+
+		Browser.storage.get(function(st) {
+			if(location == st.defaultLocation)
+				delete st.domainLocation[domain];
+			else
+				st.domainLocation[domain] = location;
+
+			Browser.storage.set(st, function() {
+				Browser.gui.refreshAllIcons();
+			});
+		});
+	});
+};
+
 PopupFennec.setLevel = function(domain, level) {
 	var items = [
-		{ label: "Use fixed location", selected: (level == "fixed"),  level: "fixed"  },
 		{ label: "High",               selected: (level == "high"),   level: "high"   },
 		{ label: "Medium",             selected: (level == "medium"), level: "medium" },
 		{ label: "Low",                selected: (level == "low"),    level: "low"    },
-		{ label: "Use real location",  selected: (level == "real"),   level: "real"   },
 	];
 
 	new Prompt({
