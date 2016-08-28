@@ -12,6 +12,16 @@ var currentPos = {
 
 Browser.init('options');
 Browser.storage.get(function(st) {
+	var domain = Util.extractDomain(myUrl);
+	var level = st.domainLevel[domain] || st.defaultLevel;
+	var location = st.domainLocation[domain] || st.defaultLocation;
+	
+	if(location=="fixed")
+	{
+		currentPos.latitude = st.fixedPos.latitude;
+		currentPos.longitude = st.fixedPos.longitude;
+	}
+	
 	epsilon = st.epsilon;
 });
 
