@@ -12,11 +12,8 @@ var currentPos = {
 
 Browser.init('options');
 Browser.storage.get(function(st) {
-	var domain = Util.extractDomain(myUrl);
-	var level = st.domainLevel[domain] || st.defaultLevel;
-	var location = st.domainLocation[domain] || st.defaultLocation;
 	
-	if(location=="fixed")
+	if(st.defaultLocation=="fixed")
 	{
 		currentPos.latitude = st.fixedPos.latitude;
 		currentPos.longitude = st.fixedPos.longitude;
@@ -55,6 +52,7 @@ function Slider(opt) {
 
 function saveOptions() {
 	Browser.storage.get(function(st) {
+		st.defaultLocation = $('#defaultLocation').val();
 		st.defaultLevel = $('#defaultLevel').val();
 		st.paused = $("#paused").prop('checked');
 		st.hideIcon = $("#hideIcon").prop('checked');
@@ -359,6 +357,7 @@ function initPages() {
 		//
 		if(page == "options") {
 			Browser.storage.get(function(st) {
+				$('#defaultLocation').val(st.defaultLocation).selectmenu("refresh");
 				$('#defaultLevel').val(st.defaultLevel).selectmenu("refresh");
 				$('#paused').prop('checked', st.paused).checkboxradio("refresh");
 				$('#hideIcon').prop('checked', st.hideIcon).checkboxradio("refresh");
