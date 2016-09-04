@@ -196,6 +196,7 @@ function addNoise(position, handler) {
       if(location == 'fixed') {
         position.coords.latitude = st.fixedPos.latitude;
         position.coords.longitude = st.fixedPos.longitude;
+        position.coords.accuracy = 20;
       }
 			// add noise
 			var epsilon = st.epsilon / st.levels[level].radius;
