@@ -11,6 +11,7 @@ case "$1" in
         cp -r src/chrome $DIST/
         ;;
     firefox)
+        rm -fR $DIST/firefox
         mkdir -p $DIST/firefox/data
 
         cp -r src/common/* $DIST/firefox/data/
@@ -22,6 +23,9 @@ case "$1" in
 		#
         cat $DIST/firefox/data/js/{util,browser_base,browser,main}.js > $DIST/firefox/lib/main.js
         rm $DIST/firefox/data/js/main.js	# not needed, avoid duplicates
+	cd ./dist/firefox
+	jpm xpi
+	mv location-spoofer.xpi ./../../
         ;;
     clean)
         rm -rf $DIST
