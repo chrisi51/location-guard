@@ -176,6 +176,6 @@ var Browser = {
 
 // for quick logging
 function blog() {
-	Browser.log.apply(Browser, arguments);
+//	Browser.log.apply(Browser, arguments);
 }
 
