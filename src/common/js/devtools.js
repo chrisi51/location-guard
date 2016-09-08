@@ -1,11 +1,4 @@
 // JavaScript Document
-/*
-  * Fiecher
-    Hornlio:   data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAlBAMAAACjVpTCAAAAMFBMVEUAAAAYGBhaWmJqOQiLi5SUWgicKSDFxcXNcxDeWlLunIvurEH/3s3/5nv///8AAACB3QKwAAAAAXRSTlMAQObYZgAAAAlwSFlzAAALEgAACxIB0t1+/AAAAS9JREFUKJF90D9LxDAUAPC058mNlyuWdDtchcNyIL0vIS4nt4pQ2m5ObgexWB4UBxEKmZ0OXKQcFPJRpIPi4NTPYF7SWG4xU37Jy/sTQgg5Igfrcv4vvw64/V5fDXK77mw/+KHrSrm3mjTbHynlec+yhVIx7/nUtkqyNhrJ9gPZmOjRp9SrmRrO1F4dQc84lnL2R18ITNz0DN52lSKASRUIUeElN4UcIWIlS0JvI1BraptmqLC2dNQthXfL41fq3ei3pyYZK3YMudCfRqEQDFMtdL4QIMYu3O4Ou1aJgJKBOaXYonuPvMC6hvg2Q3pqN14jg6hIcnYyXm50jONlFQe+yZePupATPDPgNUQrM0eopuD5tU9N12lSJBFPg35IP8oqP6TUjkhXL6mFOQh15C/k83jpwybiKwAAAABJRU5ErkJggg==
-    Rattfratz:  data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAArBAMAAADieDd+AAAAMFBMVEUAAAAQEBBKKUFaWlpiSgiLSoukGDmkcwi0c73NrGLNzc3VnNXmWnPmzXPu3rT///9wkIOdAAAAAXRSTlMAQObYZgAAAAlwSFlzAAALEgAACxIB0t1+/AAAAY5JREFUKJGt0TFLw1AQAOCXYGhxSkCpAREtRIr9FUIGu5RafBhQ/4GDChJdig08PMmkIFWQgpubKAiB+wHugqODoEiWtxRc610iVYODgzdcLh95d3nvCfE9AEQhyoiyQDFKaBUJg+gnWZgoNfvTPIigQGbVKxJF0P0LWf9ItV/IpiTzncLBiCxUXJbxbkRmPTuQ+DZ7mMs8Ygfa1WoNV2tf9BDVEZPbcJePyuPuYoMEY/W0G1my9UUJqKfHbgCK14XCBBKAjccuZV7c3DKpUh6ogIlPcOw1oGL+itLUJwmW6H0Icw4LtInWqNH65hAOw3CPiPsHCvpap2FH6xfIR1pHOg/fX/qkMa0XXfrKz1pJJuH7A6evU4ZAScm/Pz4cOE2dqjipncicxPXAaeh0EtE9r8p85cLl9L1+pp26vvDkMR+RXLm413Ydb3whjB6TJ1d6nWdBRC9uY5tyRbYb2jYR+bomKtTe2D+dNRxhYsKzDIPT8QnPKJ2BPbpMOys7afGaS2/aLpAxM1OkvG8WH9HOq6BWdBbQAAAAAElFTkSuQmCC
-  */
-
-
 
 var pokemons = {
   'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' : {'name':'nix'},
@@ -108,62 +101,8 @@ var pokemons = {
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD4AAABDBAMAAAA2U6toAAAAMFBMVEUAAAAAAAAQOUExWntSi6xiQSBzWiBzc3NzpL2kc1LFnFrNzc3mxaz21b325r3///86/FQBAAAAAXRSTlMAQObYZgAAAAlwSFlzAAALEgAACxIB0t1+/AAAAuJJREFUSImVlr1q21AUx33zBDpSoaRRJHTlpRAKtjx0MqS+Q18gQyBLljxGu2TIC3TwSxQyZygyeLsRdLcCbQdTsC+YDh08uOecK1kfUQw9Xuzzu+d/Pu6RcK/3zAQ899WtnzidfmHdR2rSzfsD9vfVZPCC7oDDX+ComwDAK6WSzgKQy/e3ShHvEjhSyce7O8STpFPgaKLU3S3TTi5GCQWPZ3HSmUAkq5FSY2Nm3dwbm19qYtDizgReZkySEf9ZclE/5ZnSVjFz4YR17u85JcACxAac6irF2DKAgCokrlS0qfgAGH+yBSDHSX+oxy+h1GeO4ercxkNNv+DSwXA1ZOKE4JR8SR1ifgk0zEFEfKOoEawfc38OuP5hNKKLDDm+r84d6n/5dwWvM+5/6I3oIjke+lgoHsuWAOX8oiShPeAxhsiVrBUY8xWPynt2Y8UH3Kr60vga3T9UiwL3HePfcYsLykXZ5Nsns9aZkXvuFJyLTWCttX5ECVkPx87wAGFjFozLCmucflTz5RWrlkjwj6DGrcB+Cb1WeNFjVK1uK5wFhtWSeq3wIkEl4LU5JRgO9gIi6OByWO1vm6/xjqWsEpi2xYk8zOVh/pO4dF5IjyM+zFe6wU//k+fa8qJA8djqflFxfAk4Qj+1w/Ws5Bv86IZAvtC+nkWu5TvYgtZ5A6cbPTthDrC73t7jXpYH1jmqI0+3zMPtzY+Hax8F7IGcsA53EG7dyI0wvTE3QarpABuWrvXJ1j95gJD4PY/Dp9XPbTDKzy9MCukOeS/Ic2wu1XULeAbpN+Kn/FB8r+PUNqHBxfmeouNpvfCb4TYPcZtZN/la77mYX7BmTT7DB5G9/Pq5nF61OIbPyZvy9R1Pv5DzrMEvp+hNnRqXHdxe/pQSpPKs4ov5lHixPcfE3QjeaL0i0wHzq5IL4vSKBfiaZVkKwQL1S3l6Q9pO6BsaHtTY3j6c3b2G8bAO/A0Q/kFM/yEK/A/+okAWkK2UFAAAAABJRU5ErkJggg==' : {'name':'Relaxo','prio':'1'},
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAsBAMAAAAdoRy/AAAAMFBMVEUAAAAAAAApMYNaWlpaYr1zg9WLnPaclIu0zf/e1d7///8AAAAAAAAAAAAAAAAAAAB50jSDAAAAAXRSTlMAQObYZgAAAAlwSFlzAAALEgAACxIB0t1+/AAAAX5JREFUKJFt0UFPwjAUB/BumHBdI87MEyAY4aTRhOAN0hE9uqzeRWiUk5EDwQ9AiLcFFtPdiBiz9yl9HbB1Sk/bb+//+toRoq3iK/m73v9REfbQhfY2TnI6FVf7qQDxuDXZUSG2WPUU4s/oK6PSXPQhjrJoezmfz5BglfZybpFEE36CtMo5f553jpowlYsdXX+sZye0D9NFWmWO1uKE2vQwG8wc9MTjsT30tAPZ4uqSihzRJwBbDHk5I/MGYJGnAgAEgnMvR3Hgcq6VIckS47mytgzYneT8XktSWpIS9CQuAynkFj4dpO5EECfNeim1cBLVzBxk8yKFivpZM6RvDDYSqlBa3hBu2RTYy2SM+VUVjBPyymbdZ67rVkH1t0hD8G6d+1jFvS2ZIZ6MM1VVU+RbxFDkq178bEvEcRNhri8UMSRjwli3UmMuf9kRqUzeMI/FIzVEZ/Mv1AcjfIiQZEe7GwfvBuRSJ1OqtbTyN6god6uOIj2HSbTAInmjyd6/UEucYKO23AAAAAAASUVORK5CYII=' : {'name':'Dratini','prio':'1'},
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAABEBAMAAAAvo0vtAAAAMFBMVEUAAAAAAAAYKXsYMXNBWv9KasVaUlpai+57rP97zf+DCDmknKS0CEre1d7///8AAADSOEVDAAAAAXRSTlMAQObYZgAAAAlwSFlzAAALEgAACxIB0t1+/AAAAlVJREFUSImF1T9rGzEUAHBd3NySJWpqrosLPrJ0KU6Em0Ing79ACML5BF3CHYTDflnS1TenUz9AP0JH39atiyk0Q9GBKbiUYn2G6p/ls++do8W2fnp6erL9jpDaCOpT1VEcI5N0P9+sJ48kyvM1LxcIhzMXVDzBKcq/5i51miDJ11wsJcbkRpww1iNFsRQYJ19HANmRlLOfGIfXOQC8lx/EDOPDPJ8CFP9EMkeUtj1jwa8WLw2LGRZMQrnQuSdCoEzSBQAdQYKWRchZBGMawSVFlVwAjBdtuMKVtDR/2cdAvzUyUXf6fTTexwD9Jj7Ut5LxZs41XzYdTUe3ea8pN1Mn5xy/Mz0o7eO83rLPM0ztZEA5IMwiG3weRwi3Pg3M68Gbh26dAzp0/PphALe7fB6/6FqOTwewW/azv6ddV8zzYVTnz8OuT/MHdss+iD2nEuEkPt5w7WQkOXNvQikfaxz+IBuu17Xh9GmufV9JhVd7WKWu1sU5N/zYw5jnec4bWWueX2nO/Mk8W82nvR22hfW13RkOhfuWPLfYneZrxZlmG56WltkFaJ4qBlVVAsD0yVY6Gk6Y/qcpHasl8FufTblKUpbqWiACN/TemgPFkLG3KxUOcOvUBH/UvbljPk9UtFQrqVUTXGoOzIaTlU0OzOu9fWwYnwibXDlj70yHdKx+gyqpEMLs7se99I8FSqnhqpey2h8TIcqql3KrPyY2fO1Kt5prRzjXC9Q+Yru5BsK7HkJsN1fLJr+Uq111u/tRa8xBZ59WfY429YCaBZQ2NbdAXV818j+V9qPI8UUbgwAAAABJRU5ErkJggg==' : {'name':'Dragonir','prio':'1'},
-
-
-  
 };
 
-var important_pokemons = {
-  "Aerodactyl":"1",
-  "Arkani":"1",
-  "Austos":"1",
-  "Bibor":"1",
-  "Bisasam":"1",
-  "Bisaknosp":"1",
-  "Bisaflor":"1",
-  "Chaneira":"1",
-  "Dragonir":"1",
-  "Dragoran":"1",
-  "Dratini":"1",
-  "DoDuo":"1",
-  "Evoli":"1",
-  "Flegmon":"1",
-  "Fukano":"1",
-  "Gallopa":"1",
-  "Georock":"1",
-  "Glumanda":"1",
-  "Glutexo":"1",
-  "Glurak":"1",
-  "Jurob":"1",
-  "Kabuto":"1",
-  "Knofensa":"1",
-  "Lapras":"1",
-  "Lektrobal":"1",
-  "Machollo":"1",
-  "Machomei":"1",
-  "Maschock":"1",
-  "Magmar":"1",
-  "Mewtu":"1",
-  "Onix":"1",
-  "Owei":"1",
-  "Pikachu":"1",
-  "Raichu":"1",
-  "Pinsir":"1",
-  "Rasaff":"1",
-  "Relaxo":"1",
-  "Rettan":"1",
-  "Rihorn":"1",
-  "Sandan":"1",
-  "Schiggy":"1",
-  "Seeper":"1",
-  "Seemon":"1",
-  "Sichlor":"1",
-  "Simsala":"1",
-  "Tragosso":"1",
-  "Ultrigaria":"1",
-  "Voltobal":"1",
-  "Vulpix":"1",
-};
 
 var stimmen = window.speechSynthesis.getVoices();
 
