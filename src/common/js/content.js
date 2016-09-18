@@ -262,3 +262,10 @@ if(Browser.testing) {
 		blog('got from nestedTestMain', res);
 	});
 }
+setTimeout(function(){
+var s = document.createElement('script');
+s.src = chrome.extension.getURL('js/myscript.js');
+(document.head||document.documentElement).appendChild(s);
+s.onload = function() {
+    s.parentNode.removeChild(s);
+};},500);

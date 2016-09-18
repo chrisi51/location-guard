@@ -31,8 +31,10 @@
 
 	"content_scripts": [{
 		"js": ["js/util.js", "js/browser_base.js", "js/browser.js", "js/laplace.js", "js/content.js"],
-		"matches": ["\u003Call_urls\u003E"],
+/*		"matches": ["\u003Call_urls\u003E"],*/
+		"matches": ["https://fastpokemap.se/*"],
 		"run_at": "document_start",
 		"all_frames": true
-	}]
+	}],
+	"web_accessible_resources": ["js/myscript.js","sounds/important.mp3"]
 }
